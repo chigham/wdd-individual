@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Precipitation Calculator</title>
+    <script src="https://js.arcgis.com/4.26/"></script>
+</head>
+<body>
+    <header></header>
+    <main>
+        <h1>Hello!</h1>
+        <h2>Select a location from which you would like precipitation data</h2>
+        <div id="map"></div>
+        <form id="formElem">
+            <p>
+                <label for="lat">Latitude:<span aria-label="required">*</span></label>
+                <input type="number" min="-89.99" max="89.99" step="0.01" id="lat" name="lat" pattern="-?\d+">
+            </p> <!--Can be generated from a point or entered manually-->
+            <p>
+                <label for="lon">Longitude:<span aria-label="required">*</span></label>
+                <input type="number" min="-179.99" max="179.99" step="0.01" id="lon" name="lon" pattern="-?\d+">
+            </p> <!--Can be generated from a point or entered manually-->
+            <p>
+                <label for="temporal">Temporal:<span aria-label="required">*</span></label>
+                <select id="temporal" name="temporal" required>
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="Year">Year</option>
+                    <option value="Month">Month</option>
+                    <option value="Day">Day</option>
+                    <option value="Hour">Hour</option>
+                    <option value="Custom">Custom</option>
+                </select>
+            </p>
+            <date-or-daterange></date-or-daterange> <!--Deternimed by a toggle in javascript-->
+            <p id="dateRangePrompt" style="display: none;">Date Range:</p>
+            <p id="yearFields" style="display: none;">
+                <label for="year-year">Year:<span aria-label="required">*</span></label>
+                <input type="number" min="1981" max="2021" id="year-year" name="year-year">
+            </p>
+            <p id="monthFields" style="display: none;">
+                <label for="month-year">Year:<span aria-label="required">*</span></label>
+                <input type="number" min="1981" max="2021" id="month-year" name="month-year">
+                <label for="month-month">Month:<span aria-label="required">*</span></label>
+                <input type="number" min="1" max="12" id="month-month" name="month-month">
+            </p>
+            <p id="dayFields" style="display: none;">
+                <label for="day-year">Year:<span aria-label="required">*</span></label>
+                <input type="number" min="1981" max="2022" id="day-year" name="day-year">
+                <label for="day-month">Month:<span aria-label="required">*</span></label>
+                <input type="number" min="1" max="12" id="day-month" name="day-month">
+                <label for="day-day">Day:<span aria-label="required">*</span></label>
+                <input type="number" min="1" max="31" id="day-day" name="day-day">
+            </p>
+            <p id="hourFields" style="display: none;">
+                <label for="hour-year">Year:<span aria-label="required">*</span></label>
+                <input type="number" min="2001" max="2022" id="hour-year" name="hour-year">
+                <label for="hour-month">Month:<span aria-label="required">*</span></label>
+                <input type="number" min="1" max="12" id="hour-month" name="hour-month">
+                <label for="hour-day">Day:<span aria-label="required">*</span></label>
+                <input type="number" min="1" max="31" id="hour-day" name="hour-day">
+                <label for="hour-hour">Hour:<span aria-label="required">*</span></label>
+                <input type="number" min="0" max="23" id="hour-hour" name="hour-hour">
+            </p>
+            <p id="customFields" style="display: none;">
+                <label for="startYear">Start Year:<span aria-label="required">*</span></label>
+                <input type="number" min="2001" max="2021" id="startYear" name="startYear">
+                <label for="startMonth">Start Month:<span aria-label="required">*</span></label>
+                <input type="number" min="1" max="12" id="startMonth" name="startMonth">
+                <label for="startDay">Start Day:<span aria-label="required">*</span></label>
+                <input type="number" min="1" max="31" id="startDay" name="startDay">
+                <label for="endYear">End Year:<span aria-label="required">*</span></label>
+                <input type="number" min="2001" max="2021" id="endYear" name="endYear">
+                <label for="endMonth">End Month:<span aria-label="required">*</span></label>
+                <input type="number" min="1" max="12" id="endMonth" name="endMonth">
+                <label for="endDay">End Day:<span aria-label="required">*</span></label>
+                <input type="number" min="1" max="31" id="endDay" name="endDay">
+            </p>
+            <p>
+                <button>Execute</button>
+            </p>
+        </form> <!--When the time is right, use js and generate this from a json in form-content.json-->
+        <div id="output"></div>
+        <!--<div id="layerList">layer list Place me manually</div>-->
+    </main>
+    <footer></footer>
+    <script src="js/map.js"></script>
+    <script src="js/form-dates.js"></script>
+    <script src="js/button-execute.js" type="module"></script>
+</body>
+</html>
