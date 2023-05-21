@@ -26,3 +26,25 @@ p {
 #results {
     margin-left: 10%;
 }
+.parent-of-text-attributions {
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+    overflow: hidden;
+}
+.esri-attribution__sources {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+    text-align: left;
+}
+.esri-attribution__powered-by {
+    flex: 0;
+    margin-left: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+    text-align: right;
+}

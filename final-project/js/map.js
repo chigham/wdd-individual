@@ -1,3 +1,5 @@
+import creditPOWER from "/js/modify-attribution.mjs";
+
 require([
     "esri/Map",
     "esri/views/MapView",
@@ -20,9 +22,9 @@ require([
         container: "map",
         map: map,
         center: [0, 10], // Set the initial center coordinates
-        zoom: 2 // Set the initial zoom level
+        zoom: 3, // Set the initial zoom level
     });
-
+    
     // Create the layer
     var layer = new MapImageLayer({
         url: "https://arcgis.asdc.larc.nasa.gov/server/rest/services/POWER/power_901_climatology_meteorology_utc/ImageServer",
@@ -72,3 +74,7 @@ require([
     // Listen for the click event on the map view
     view.on("click", handleMapClick);
 });
+
+setTimeout(function() {
+    creditPOWER();
+}, 3000);
