@@ -1,13 +1,12 @@
-import creditPOWER from "/wdd-individual/final-project/js/modify-attribution.mjs";
+import creditPOWER from "/js/modify-attribution.mjs";//"/wdd-individual/final-project/js/modify-attribution.mjs";
 
 require([
     "esri/Map",
     "esri/views/MapView",
-    "esri/layers/MapImageLayer",
     "esri/layers/GraphicsLayer",
     "esri/symbols/SimpleMarkerSymbol",
     "esri/Graphic"
-], function(Map, MapView, MapImageLayer, GraphicsLayer, SimpleMarkerSymbol, Graphic) {
+], function(Map, MapView, GraphicsLayer, SimpleMarkerSymbol, Graphic) {
 
     const latInput = document.getElementById('lat');
     const lonInput = document.getElementById('lon');
@@ -24,20 +23,6 @@ require([
         center: [0, 10], // Set the initial center coordinates
         zoom: 3, // Set the initial zoom level
     });
-    
-    // Create the layer
-    var layer = new MapImageLayer({
-        url: "https://arcgis.asdc.larc.nasa.gov/server/rest/services/POWER/power_901_climatology_meteorology_utc/ImageServer",
-        sublayers: [
-            {
-                id: 0,
-                visible: true
-            }
-        ]
-    });
-
-    // Add the layer to the map
-    map.add(layer);
 
     // Create a graphics layer to hold the manually placed point
     const graphicsLayer = new GraphicsLayer();
