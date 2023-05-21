@@ -1,4 +1,4 @@
-import creditPOWER from "./js/modify-attribution.mjs";
+import creditPOWER from "/final-project/js/modify-attribution.mjs";
 
 require([
     "esri/Map",
