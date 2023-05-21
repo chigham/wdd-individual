@@ -1,4 +1,4 @@
-import creditPOWER from "/js/modify-attribution.mjs";//"/wdd-individual/final-project/js/modify-attribution.mjs";
+import creditPOWER from "/wdd-individual/final-project/js/modify-attribution.mjs";//"/js/modify-attribution.mjs";
 
 require([
     "esri/Map",
@@ -20,8 +20,8 @@ require([
     var view = new MapView({
         container: "map",
         map: map,
-        center: [0, 10], // Set the initial center coordinates
-        zoom: 3, // Set the initial zoom level
+        center: [0, 10],
+        zoom: 3,
     });
 
     // Create a graphics layer to hold the manually placed point
@@ -30,7 +30,7 @@ require([
 
     // Create a symbol for the point
     const pointSymbol = new SimpleMarkerSymbol({
-        color: [255, 0, 0],  // Red color for the point
+        color: [255, 0, 0],
         size: 10,
     });
 
@@ -60,6 +60,7 @@ require([
     view.on("click", handleMapClick);
 });
 
+// Wait until the map loads to change the attributions
 setTimeout(function() {
     creditPOWER();
 }, 3000);
