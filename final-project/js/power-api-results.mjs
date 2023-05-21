@@ -10,7 +10,6 @@ export function getDateResults(temporal) {
         dateResults.Year = document.getElementById('day-year').value;
         dateResults.Month = document.getElementById('day-month').value;
         dateResults.Day = document.getElementById('day-day').value;
-        console.log(dateResults);
     } else if (temporal == 'Hour') {
         dateResults.Year = document.getElementById('hour-year').value;
         dateResults.Month = document.getElementById('hour-month').value;
@@ -20,15 +19,17 @@ export function getDateResults(temporal) {
         dateResults.Year1 = document.getElementById('startYear').value;
         dateResults.Month1 = document.getElementById('startMonth').value;
         dateResults.Day1 = document.getElementById('startDay').value;
+        dateResults.Hour1 = 0;
         dateResults.Year2 = document.getElementById('endYear').value;
         dateResults.Month2 = document.getElementById('endMonth').value;
         dateResults.Day2 = document.getElementById('endDay').value;
+        dateResults.Hour2 = 23;
     }
 
     return dateResults;
 }
 
-export async function apiResults(temporal, lon, lat, dateResults, output) {
+export async function apiResults(temporal, lon, lat, dateResults, progress) {
     //const form = document.getElementById('formElem');
     
     let apiUrl = "";
@@ -48,17 +49,19 @@ export async function apiResults(temporal, lon, lat, dateResults, output) {
         let day1 = dateResults.Day1.toString().padStart(2, '0');
         let month2 = dateResults.Month2.toString().padStart(2, '0');
         let day2 = dateResults.Day2.toString().padStart(2, '0');
-        apiUrl = `https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=PRECTOTCORR_SUM&community=RE&longitude=${lon}&latitude=${lat}&start=${dateResults.Year1}${month1}${day1}&end=${dateResults.Year2}${month2}${day2}&time-standard=lst&format=JSON&user=byuiwddchigham`;
+        apiUrl = `https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=PRECTOTCORR&community=RE&longitude=${lon}&latitude=${lat}&start=${dateResults.Year1}${month1}${day1}&end=${dateResults.Year2}${month2}${day2}&time-standard=lst&format=JSON&user=byuiwddchigham`;
     }
 
-    output.textContent = "Running...";
-    
+    return apiUrl;
+
+    progress.textContent = "Running...";
+
     const promise = fetch(apiUrl)
         .then((response) => response.json())
         .then((jsonData) => {
-            console.log(jsonData);
-            output.textContent = "Done";
-            return { jsonData, dateResults };
+            //console.log(jsonData);
+            progress.textContent = "Done";
+            return { jsonData, dateResults, apiUrl };
         })
         .catch((error) => {
             console.error("Error:", error);
@@ -67,3 +70,5 @@ export async function apiResults(temporal, lon, lat, dateResults, output) {
 
   return promise;
 }
+
+//export async function apiRequest
