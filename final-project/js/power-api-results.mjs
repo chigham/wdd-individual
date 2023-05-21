@@ -29,8 +29,7 @@ export function getDateResults(temporal) {
     return dateResults;
 }
 
-export async function apiResults(temporal, lon, lat, dateResults, progress) {
-    //const form = document.getElementById('formElem');
+export function apiResults(temporal, lon, lat, dateResults) {
     
     let apiUrl = "";
     
@@ -51,12 +50,14 @@ export async function apiResults(temporal, lon, lat, dateResults, progress) {
         let day2 = dateResults.Day2.toString().padStart(2, '0');
         apiUrl = `https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=PRECTOTCORR&community=RE&longitude=${lon}&latitude=${lat}&start=${dateResults.Year1}${month1}${day1}&end=${dateResults.Year2}${month2}${day2}&time-standard=lst&format=JSON&user=byuiwddchigham`;
     }
-
+    
     return apiUrl;
+}
 
+export async function apiRequest(apiUrl, dateResults, progress) {
     progress.textContent = "Running...";
 
-    const promise = fetch(apiUrl)
+    const promise = await fetch(apiUrl)
         .then((response) => response.json())
         .then((jsonData) => {
             //console.log(jsonData);
@@ -67,8 +68,6 @@ export async function apiResults(temporal, lon, lat, dateResults, progress) {
             console.error("Error:", error);
             throw error;
         });
-
-  return promise;
+    
+    return promise;
 }
-
-//export async function apiRequest

@@ -1,4 +1,4 @@
-import {apiResults, getDateResults} from "/js/power-api-results.mjs";
+import {apiResults, getDateResults, apiRequest} from "/js/power-api-results.mjs";
 import convertMMtoIN from "/js/convert-mm-to-in.mjs";
 import downloadCSV from "/js/download-csv.mjs";
 
@@ -8,18 +8,23 @@ form.addEventListener('submit', createSubmitData);
 const progress = document.getElementById('progress');
 const results = document.getElementById('results');
 
+var newParagraph;
+var newButton;
+
 function createSubmitData(event) {
-    event.preventDefault(); // Prevent form submission
+    // Prevent form submission
+    event.preventDefault();
 
     // Get the form values
     const temporal = document.getElementById('temporal').value;
     const lon = document.getElementById('lon').value;
     const lat = document.getElementById('lat').value;
     const dateResults = getDateResults(temporal);
+    const url = apiResults(temporal, lon, lat, dateResults);
     let mm = 0;
 
     // Call the apiResults function with the form values
-    const dataResults = apiResults(temporal, lon, lat, dateResults, progress)
+    const dataResults = apiRequest(url, dateResults, progress)
         .then(({jsonData, dateResults}) => {
             let content = "";
             if (temporal == "Year") {
@@ -45,6 +50,7 @@ function createSubmitData(event) {
             // Clear existing content except for the 'progress' div
             while (results.children.length > 1) {
                 results.removeChild(results.lastChild);
+                results.removeChild(results.lastChild);
             }
         
             // Append new content after 'progress' div
@@ -53,16 +59,12 @@ function createSubmitData(event) {
             results.appendChild(newContent);
 
             // Append a download data button
-            const newParagraph = document.createElement('p');
-            const newButton = document.createElement('button');
+            newParagraph = document.createElement('p');
+            newButton = document.createElement('button');
             newButton.innerHTML = "Download Data";
-            //newButton.addEventListener("click", () => downloadCSV(apiUrl));
             newParagraph.appendChild(newButton);
             results.appendChild(newParagraph);
-        })
-        .catch((error) => {
-            progress.textContent = `Error occurred\n${error.header.messages}`;
-        });
 
-    newButton.addEventListener("click", () => downloadCSV(dataResults.apiUrl));
+            newButton.addEventListener("click", () => downloadCSV(url));
+        })
 }
