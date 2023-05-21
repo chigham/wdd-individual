@@ -55,8 +55,8 @@ p {
     text-align: right;
 }
 
+/* Medium screens like small laptops */
 @media screen and (min-width: 601px) and (max-width: 1600px) {
-    /* Add your styles for medium screens here */
     #map {
         height: 50vh;
         width: 80vw;
@@ -67,13 +67,12 @@ p {
     }
   }
 
+/* Small screens like mobile phones */
 @media screen and (max-width: 600px) {
-    /* Add your styles for small screens here */
     #map {
         position: relative;
-        height: 40vh;
+        height: 50vh;
         width: 100vw;
-        z-index: -1;
     }
     #input-results {
         display: block;
