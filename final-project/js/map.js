@@ -2,12 +2,10 @@ require([
     "esri/Map",
     "esri/views/MapView",
     "esri/layers/MapImageLayer",
-    "esri/widgets/LayerList",
-    "esri/widgets/Expand",
     "esri/layers/GraphicsLayer",
     "esri/symbols/SimpleMarkerSymbol",
     "esri/Graphic"
-], function(Map, MapView, MapImageLayer, LayerList, Expand, GraphicsLayer, SimpleMarkerSymbol, Graphic) {
+], function(Map, MapView, MapImageLayer, GraphicsLayer, SimpleMarkerSymbol, Graphic) {
 
     const latInput = document.getElementById('lat');
     const lonInput = document.getElementById('lon');
@@ -27,7 +25,7 @@ require([
 
     // Create the layer
     var layer = new MapImageLayer({
-        url: "https://arcgis.asdc.larc.nasa.gov/server/rest/services/POWER/power_901_monthly_meteorology_utc/ImageServer",
+        url: "https://arcgis.asdc.larc.nasa.gov/server/rest/services/POWER/power_901_climatology_meteorology_utc/ImageServer",
         sublayers: [
             {
                 id: 0,
@@ -38,22 +36,6 @@ require([
 
     // Add the layer to the map
     map.add(layer);
-
-    // Create the LayerList widget
-    var layerListWidget = new LayerList({
-        view: view,
-        container: document.createElement("div")
-    });
-
-    // Create an Expand widget for the LayerList
-    var layerListExpand = new Expand({
-        view: view,
-        content: layerListWidget.domNode,
-        expanded: true
-    });
-
-    // Add the LayerList widget to the top-left corner of the view
-    //view.ui.add(layerListExpand, "top-left");
 
     // Create a graphics layer to hold the manually placed point
     const graphicsLayer = new GraphicsLayer();
