@@ -1,6 +1,6 @@
-import {apiResults, getDateResults, apiRequest} from "/final-project/js/power-api-results.mjs";
-import convertMMtoIN from "/final-project/js/convert-mm-to-in.mjs";
-import downloadCSV from "/final-project/js/download-csv.mjs";
+import {apiResults, getDateResults, apiRequest} from "/wdd-individual/final-project/js/power-api-results.mjs";
+import convertMMtoIN from "/wdd-individual/final-project/js/convert-mm-to-in.mjs";
+import downloadCSV from "/wdd-individual/final-project/js/download-csv.mjs";
 
 const form = document.getElementById('formElem');
 form.addEventListener('submit', createSubmitData);
