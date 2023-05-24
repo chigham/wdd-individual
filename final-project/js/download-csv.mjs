@@ -32,8 +32,13 @@ export default async function downloadCSV(apiUrl) {
     const temporalEnd = "/point?";
     const temporalIndex = apiUrl.indexOf(temporalStart) + temporalStart.length;
     const temporalValue = apiUrl.substring(temporalIndex, apiUrl.indexOf(temporalEnd));
+    const indParam = "parameters=";
+    const commParam = "&community";
+    const indIndex = apiUrl.indexOf(indParam) + indParam.length;
+    const commIndex = apiUrl.indexOf(commParam)
+    const indValue = apiUrl.substring(indIndex, commIndex)
 
-    link.download = `${temporalValue}_precipitation_at_${latValue}-${lonValue}_from_${startValue}-${endValue}.csv`;
+    link.download = `${temporalValue}_${indValue.toLowerCase()}_lat${latValue}_lon${lonValue}_from_${startValue}to${endValue}.csv`;
 
     // Simulate a click event to trigger the file download
     link.click();
