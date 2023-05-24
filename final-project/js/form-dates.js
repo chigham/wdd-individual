@@ -9,7 +9,6 @@ function updateTemporalFields() {
     document.getElementById("yearFields").style.display = "none";
     document.getElementById("monthFields").style.display = "none";
     document.getElementById("dayFields").style.display = "none";
-    document.getElementById("hourFields").style.display = "none";
     document.getElementById("customFields").style.display = "none";
     
     // Show the relevant field set based on the selected option
@@ -25,12 +24,8 @@ function updateTemporalFields() {
         document.getElementById("dateRangePrompt").textContent = "Choose a day (1981-2022): ";
         document.getElementById("dateRangePrompt").style.display = "block";
         document.getElementById("dayFields").style.display = "block";
-    } else if (selectedOption === "Hour") {
-        document.getElementById("dateRangePrompt").textContent = "Choose an hour (2001-2022): ";
-        document.getElementById("dateRangePrompt").style.display = "block";
-        document.getElementById("hourFields").style.display = "block";
     } else if (selectedOption === "Custom") {
-        document.getElementById("dateRangePrompt").textContent = "Choose a date range (2001-2021): ";
+        document.getElementById("dateRangePrompt").innerHTML = "Choose a date range. For <br>best results, limit range to <br>5 years or less (2001-2021): ";
         document.getElementById("dateRangePrompt").style.display = "block";
         document.getElementById("customFields").style.display = "block";
     }
