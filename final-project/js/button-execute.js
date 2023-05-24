@@ -1,7 +1,6 @@
 import {apiResults, getDateResults, apiRequest} from "/js/power-api-results.mjs";//"/wdd-individual/final-project/js/power-api-results.mjs";
 import convertUnits from "/js/convert-units.mjs";//"/wdd-individual/final-project/js/convert-mm-to-in.mjs";
 import downloadCSV from "/js/download-csv.mjs";//"/wdd-individual/final-project/js/download-csv.mjs";
-//import timeZoneOffset from "/js/timezone-offset.mjs";
 
 const form = document.getElementById('formElem');
 form.addEventListener('submit', createSubmitData);
@@ -26,9 +25,12 @@ function createSubmitData(event) {
     const url = apiResults(indicator, temporal, lon, lat, dateResults);
     let mm = 0; // milsimeters of precipitation
     let pct = 0; // relative humidity percent
-    let mps = 0; // wind speed in meters per second
-    let degC = 0; // temperature in degrees celsius
+    let mpsDegC = 0; // wind speed in mps or temperature in degC
     let i = 0; // iterator
+
+    let maxValue = null;
+    let minValue = null;
+    let customMinMax = "";
 
     // Call the apiResults function with the form values
     const dataResults = apiRequest(url, dateResults, progress)
@@ -41,10 +43,6 @@ function createSubmitData(event) {
                     mm = jsonData.properties.parameter.PRECTOTCORR_SUM[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0'))];
                 } else if (temporal == "Day") {
                     mm = jsonData.properties.parameter.PRECTOTCORR[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0'))];
-                } else if (temporal == "Hour") {
-                    mm = jsonData.properties.parameter.PRECTOTCORR[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0') + dateResults.Hour.toString().padStart(2, '0'))];
-                    console.log(jsonData.properties);
-                    timeZoneOffset(40.3, -111.7);
                 } else if (temporal == "Custom") {
                     for (const key in jsonData.properties.parameter.PRECTOTCORR) {
                         if (!isNaN(jsonData.properties.parameter.PRECTOTCORR[key])) {
@@ -55,75 +53,53 @@ function createSubmitData(event) {
                 content = convertUnits(mm, "mm");
             } else if (indicator == "RH2M") {
                 if (temporal == "Year") {
-                    pct = jsonData.properties.parameter.RH2M[parseInt(dateResults.Year + '13')]
+                    pct = jsonData.properties.parameter[indicator][parseInt(dateResults.Year + '13')]
                 } else if (temporal == "Month") {
-                    pct = jsonData.properties.parameter.RH2M[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0'))];
+                    pct = jsonData.properties.parameter[indicator][parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0'))];
                 } else if (temporal == "Day") {
-                    pct = jsonData.properties.parameter.RH2M[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0'))];
-                } else if (temporal == "Hour") {
-                    pct = jsonData.properties.parameter.RH2M[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0') + dateResults.Hour.toString().padStart(2, '0'))];
+                    pct = jsonData.properties.parameter[indicator][parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0'))];
                 } else if (temporal == "Custom") {
-                    for (const key in jsonData.properties.parameter.RH2M) {
-                        if (!isNaN(jsonData.properties.parameter.RH2M[key])) {
-                            pct += jsonData.properties.parameter.RH2M[key];
+                    for (const key in jsonData.properties.parameter[indicator]) {
+                        if (!isNaN(jsonData.properties.parameter[indicator][key])) {
+                            pct += jsonData.properties.parameter[indicator][key];
                             i += 1;
                         }
                     }
                     pct = parseFloat(pct / i).toFixed(2);
                 }
                 content = pct + "%";
-            } else if (indicator == "WS2M") { 
+            } else if (indicator == "WS2M" || indicator == "T2M") { 
                 if (temporal == "Year") {
-                    mps = jsonData.properties.parameter.WS2M[parseInt(dateResults.Year + '13')]
+                    mpsDegC = jsonData.properties.parameter[`${indicator}`][parseInt(dateResults.Year + '13')];
+                    maxValue = jsonData.properties.parameter[`${indicator}_MAX`][parseInt(dateResults.Year + '13')];
+                    minValue = jsonData.properties.parameter[`${indicator}_MIN`][parseInt(dateResults.Year + '13')];
                 } else if (temporal == "Month") {
-                    mps = jsonData.properties.parameter.WS2M[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0'))];
+                    mpsDegC = jsonData.properties.parameter[`${indicator}`][parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0'))];
+                    maxValue = jsonData.properties.parameter[`${indicator}_MAX`][parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0'))];
+                    minValue = jsonData.properties.parameter[`${indicator}_MIN`][parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0'))];
                 } else if (temporal == "Day") {
-                    mps = jsonData.properties.parameter.WS2M[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0'))];
-                } else if (temporal == "Hour") {
-                    mps = jsonData.properties.parameter.WS2M[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0') + dateResults.Hour.toString().padStart(2, '0'))];
-                    /*console.log(mps);
-                    console.log(jsonData.properties);
-                    timeZoneOffset(37.7749, -122.4194)
-                        .then(function(offset) {
-                            // Handle the time zone offset value
-                            let butt = 0;
-                            console.log("Time Zone Offset:", offset);
-                            butt = offset;
-                            console.log(butt);
-                        })
-                        .catch(function(error) {
-                            // Handle any errors that occurred
-                            console.error("Error:", error);
-                        });*/
+                    mpsDegC = jsonData.properties.parameter[`${indicator}`][parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0'))];
+                    maxValue = jsonData.properties.parameter[`${indicator}_MAX`][parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0'))];
+                    minValue = jsonData.properties.parameter[`${indicator}_MIN`][parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0'))];
                 } else if (temporal == "Custom") {
-                    for (const key in jsonData.properties.parameter.WS2M) {
-                        if (!isNaN(jsonData.properties.parameter.WS2M[key])) {
-                            mps += jsonData.properties.parameter.WS2M[key];
+                    for (const key in jsonData.properties.parameter[`${indicator}`]) {
+                        if (!isNaN(jsonData.properties.parameter[`${indicator}`][key])) {
+                            mpsDegC += jsonData.properties.parameter[`${indicator}`][key];
                             i += 1;
+                            if (maxValue === null || jsonData.properties.parameter[`${indicator}`][key] > maxValue) {
+                                maxValue = jsonData.properties.parameter[`${indicator}`][key];
+                            }
+                            if (minValue === null || jsonData.properties.parameter[`${indicator}`][key] < minValue) {
+                                minValue = jsonData.properties.parameter[`${indicator}`][key];
+                            }
                         }
                     }
-                    mps = mps / i;
+                    mpsDegC = mpsDegC / i;
                 }
-                content = convertUnits(mps, "mps")
-            } else if (indicator == "T2M") {
-                if (temporal == "Year") {
-                    degC = jsonData.properties.parameter.T2M[parseInt(dateResults.Year + '13')]
-                } else if (temporal == "Month") {
-                    degC = jsonData.properties.parameter.T2M[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0'))];
-                } else if (temporal == "Day") {
-                    degC = jsonData.properties.parameter.T2M[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0'))];
-                } else if (temporal == "Hour") {
-                    degC = jsonData.properties.parameter.T2M[parseInt(dateResults.Year + dateResults.Month.toString().padStart(2, '0') + dateResults.Day.toString().padStart(2, '0') + dateResults.Hour.toString().padStart(2, '0'))];
-                } else if (temporal == "Custom") {
-                    for (const key in jsonData.properties.parameter.T2M) {
-                        if (!isNaN(jsonData.properties.parameter.T2M[key])) {
-                            degC += jsonData.properties.parameter.T2M[key];
-                            i += 1;
-                        }
-                    }
-                    degC = degC / i;
-                }
-                content = convertUnits(degC, "degC")
+                let unit = "mps";
+                if (indicator == "T2M") {unit = "degC"}
+                customMinMax = "<br>Max:<br>" + convertUnits(maxValue, unit) + "<br>Min:<br>" + convertUnits(minValue, unit);
+                content = convertUnits(mpsDegC, unit) + customMinMax;
             }
 
             // Clear existing content except for the 'progress' div
