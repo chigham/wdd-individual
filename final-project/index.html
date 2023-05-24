@@ -28,17 +28,6 @@
                         <input type="number" min="-179.5" max="179.99" step="0.01" id="lon" name="lon" pattern="-?\d+">
                     </p>
                     <p>
-                        <label for="temporal">Temporal:<span aria-label="required">*</span></label>
-                        <select id="temporal" name="temporal" required>
-                            <option value="" disabled selected>Select an option</option>
-                            <option value="Year">Year</option>
-                            <option value="Month">Month</option>
-                            <option value="Day">Day</option>
-                            <option value="Hour">Hour</option>
-                            <option value="Custom">Custom</option>
-                        </select>
-                    </p>
-                    <p>
                         <label for="indicator">Indicator:<span aria-label="required">*</span></label>
                         <select id="indicator" name="indicator" required>
                             <option value="" disabled selected>Select an option</option>
@@ -46,6 +35,16 @@
                             <option value="RH2M">Humidity</option>
                             <option value="WS2M">Wind Speed</option>
                             <option value="T2M">Temperature</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label for="temporal">Temporal:<span aria-label="required">*</span></label>
+                        <select id="temporal" name="temporal" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="Year">Year</option>
+                            <option value="Month">Month</option>
+                            <option value="Day">Day</option>
+                            <option value="Custom">Custom</option>
                         </select>
                     </p>
                 </div>
@@ -71,19 +70,6 @@
                         <br>
                         <label for="day-day">Day:<span aria-label="required">*</span></label>
                         <input type="number" min="1" max="31" id="day-day" name="day-day">
-                    </p>
-                    <p id="hourFields" style="display: none;">
-                        <label for="hour-year">Year:<span aria-label="required">*</span></label>
-                        <input type="number" min="2001" max="2022" id="hour-year" name="hour-year">
-                        <br>
-                        <label for="hour-month">Month:<span aria-label="required">*</span></label>
-                        <input type="number" min="1" max="12" id="hour-month" name="hour-month" placeholder="1-12">
-                        <br>
-                        <label for="hour-day">Day:<span aria-label="required">*</span></label>
-                        <input type="number" min="1" max="31" id="hour-day" name="hour-day">
-                        <br>
-                        <label for="hour-hour">Hour:<span aria-label="required">*</span></label>
-                        <input type="number" min="0" max="23" id="hour-hour" name="hour-hour">
                     </p>
                     <p id="customFields" style="display: none;">
                         <label for="startYear">Start Year:<span aria-label="required">*</span></label>
