@@ -38,6 +38,16 @@
                             <option value="Custom">Custom</option>
                         </select>
                     </p>
+                    <p>
+                        <label for="indicator">Indicator:<span aria-label="required">*</span></label>
+                        <select id="indicator" name="indicator" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="PRECTOTCORR">Precipitation</option>
+                            <option value="RH2M">Humidity</option>
+                            <option value="WS2M">Wind Speed</option>
+                            <option value="T2M">Temperature</option>
+                        </select>
+                    </p>
                 </div>
                 <div id="variable-inputs">
                     <p id="dateRangePrompt" style="display: none;"></p>

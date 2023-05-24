@@ -29,26 +29,29 @@ export function getDateResults(temporal) {
     return dateResults;
 }
 
-export function apiResults(temporal, lon, lat, dateResults) {
+export function apiResults(indicator, temporal, lon, lat, dateResults) {
     
     let apiUrl = "";
     
     if (temporal == "Year" || temporal == "Month") {
-        apiUrl = `https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=PRECTOTCORR_SUM&community=RE&longitude=${lon}&latitude=${lat}&start=${dateResults.Year}&end=${dateResults.Year}&time-standard=lst&format=JSON&user=byuiwddchigham`;
+        apiUrl = `https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=${indicator}&community=RE&longitude=${lon}&latitude=${lat}&start=${dateResults.Year}&end=${dateResults.Year}&time-standard=lst&format=JSON&user=byuiwddchigham`;
     } else if (temporal == "Day") {
         let month = dateResults.Month.toString().padStart(2, '0');
         let day = dateResults.Day.toString().padStart(2, '0');
-        apiUrl = `https://power.larc.nasa.gov/api/temporal/daily/point?parameters=PRECTOTCORR&community=RE&longitude=${lon}&latitude=${lat}&start=${dateResults.Year}${month}${day}&end=${dateResults.Year}${month}${day}&time-standard=lst&format=JSON&user=byuiwddchigham`;
+        apiUrl = `https://power.larc.nasa.gov/api/temporal/daily/point?parameters=${indicator}&community=RE&longitude=${lon}&latitude=${lat}&start=${dateResults.Year}${month}${day}&end=${dateResults.Year}${month}${day}&time-standard=lst&format=JSON&user=byuiwddchigham`;
     } else if (temporal == "Hour") {
         let month = dateResults.Month.toString().padStart(2, '0');
         let day = dateResults.Day.toString().padStart(2, '0');
-        apiUrl = `https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=PRECTOTCORR&community=RE&longitude=${lon}&latitude=${lat}&start=${dateResults.Year}${month}${day}&end=${dateResults.Year}${month}${day}&time-standard=lst&format=JSON&user=byuiwddchigham`;
+        apiUrl = `https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=${indicator}&community=RE&longitude=${lon}&latitude=${lat}&start=${dateResults.Year}${month}${day}&end=${dateResults.Year}${month}${day}&time-standard=lst&format=JSON&user=byuiwddchigham`;
     } else if (temporal == "Custom") {
         let month1 = dateResults.Month1.toString().padStart(2, '0');
         let day1 = dateResults.Day1.toString().padStart(2, '0');
         let month2 = dateResults.Month2.toString().padStart(2, '0');
         let day2 = dateResults.Day2.toString().padStart(2, '0');
-        apiUrl = `https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=PRECTOTCORR&community=RE&longitude=${lon}&latitude=${lat}&start=${dateResults.Year1}${month1}${day1}&end=${dateResults.Year2}${month2}${day2}&time-standard=lst&format=JSON&user=byuiwddchigham`;
+        apiUrl = `https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=${indicator}&community=RE&longitude=${lon}&latitude=${lat}&start=${dateResults.Year1}${month1}${day1}&end=${dateResults.Year2}${month2}${day2}&time-standard=lst&format=JSON&user=byuiwddchigham`;
+    }
+    if (indicator == "PRECTOTCORR" && (temporal == "Year" || temporal == "Month")) {
+        apiUrl = apiUrl.replace("PRECTOTCORR", "PRECTOTCORR_SUM");
     }
     
     return apiUrl;
