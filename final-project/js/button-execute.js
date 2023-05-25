@@ -1,6 +1,7 @@
 import {apiResults, getDateResults, apiRequest} from "/wdd-individual/final-project/js/power-api-results.mjs";//"/js/power-api-results.mjs";
 import convertUnits from "/wdd-individual/final-project/js/convert-units.mjs";//"/js/convert-mm-to-in.mjs";
 import downloadCSV from "/wdd-individual/final-project/js/download-csv.mjs";//"/js/download-csv.mjs";
+import setLocalStorageFields from "/wdd-individual/final-project/js/set-local-storage.mjs";//"/js/set-local-storage.mjs"
 
 const form = document.getElementById('formElem');
 form.addEventListener('submit', createSubmitData);
@@ -123,6 +124,17 @@ function createSubmitData(event) {
             results.appendChild(newParagraph);
 
             newButton.addEventListener("click", () => downloadCSV(url));
+
+            // Set local storage
+            let inputs = "inputValues";
+            let inputValues = {
+                "lat": lat,
+                "lon": lon,
+                "indicator": indicator,
+                "temporal": temporal,
+                "dateResults": dateResults
+            };
+            setLocalStorageFields(inputs, inputValues);
         })
         .catch((error) => {
             progress.innerHTML = "Error";

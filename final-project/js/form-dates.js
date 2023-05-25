@@ -2,7 +2,7 @@ var temporalSelect = document.getElementById("temporal");
 
 temporalSelect.addEventListener("change", updateTemporalFields);
 
-function updateTemporalFields() {
+export default function updateTemporalFields() {
     var selectedOption = temporalSelect.options[temporalSelect.selectedIndex].value;
     
     // Hide all field sets
