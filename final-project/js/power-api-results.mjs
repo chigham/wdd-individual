@@ -54,7 +54,6 @@ export async function apiRequest(apiUrl, dateResults, progress) {
     const promise = await fetch(apiUrl)
         .then((response) => response.json())
         .then((jsonData) => {
-            //console.log(jsonData);
             progress.textContent = "Done";
             return { jsonData, dateResults, apiUrl };
         })
