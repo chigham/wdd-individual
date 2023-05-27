@@ -141,6 +141,9 @@ function createSubmitData(event) {
             mobileProgressIndicator.style.color = "red";
             mobileProgressIndicator.style.fontWeight = "bold";
             console.error("Error:", error);
+            const newContent = document.createElement('div');
+            newContent.innerHTML = error;
+            results.appendChild(newContent);
             throw error;
         })
 }
